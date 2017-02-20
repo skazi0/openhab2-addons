@@ -4,12 +4,14 @@ Bundle-Name: I2C Binding
 Bundle-SymbolicName: org.openhab.binding.i2c;singleton:=true
 Bundle-Vendor: openHAB
 Bundle-Version: 2.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: .,
+ lib/pi4j-core.jar
 Import-Package: 
  org.openhab.binding.i2c,
  org.openhab.binding.i2c.handler,
  org.eclipse.smarthome.config.core,
+ org.eclipse.smarthome.config.discovery,
  org.eclipse.smarthome.core.library.types,
  org.eclipse.smarthome.core.thing,
  org.eclipse.smarthome.core.thing.binding,
