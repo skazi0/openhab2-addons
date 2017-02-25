@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="i2c"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+        xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+  <bridge-type id="bus">
+    <label>I2C bus</label>
+    <description>I2C bus bridge</description>
+
+    <config-description>
+        <parameter name="id" type="integer" min="0" max="17" required="true">
+          <label>I2C bus id</label>
+          <description>I2C bus id</description>
+        </parameter>
+    </config-description>
+  </bridge-type>
+
+</thing:thing-descriptions>

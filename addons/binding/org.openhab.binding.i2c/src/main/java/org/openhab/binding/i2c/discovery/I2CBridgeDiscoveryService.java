@@ -8,9 +8,8 @@
  */
 package org.openhab.binding.i2c.discovery;
 
-import static org.openhab.binding.i2c.I2CBindingConstants.THING_TYPE_BUS;
+import static org.openhab.binding.i2c.I2CBindingConstants.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
+import com.pi4j.wiringpi.GpioUtil;
 
 /**
  * Discovery service to scan for I2C devices.
@@ -42,21 +42,24 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
 
     public I2CBridgeDiscoveryService() {
         super(DISCOVERABLE_THING_TYPES_UIDS, DISCOVERY_TIMEOUT);
+
+        // ask for non privileged access (run without root)
+        GpioUtil.enableNonPrivilegedAccess();
     }
 
     @Override
     protected void startScan() {
-        logger.debug("Starting scan for I2C bridge.");
+        logger.debug("Start scan for I2C bridge.");
 
         for (int number = I2CBus.BUS_0; number < I2CBus.BUS_17; ++number) {
             I2CBus bus = null;
             try {
                 bus = I2CFactory.getInstance(number);
             } catch (IOException exception) {
-                logger.info("I/O error on I2C bus {} occurred.", number);
+                logger.error("I/O error on I2C bus {} occurred.", number);
                 bus = null;
             } catch (UnsupportedBusNumberException exception) {
-                logger.info("Unsupported I2C bus {} required.", number);
+                logger.debug("Unsupported I2C bus {} required.", number);
                 bus = null;
             }
 
@@ -66,23 +69,16 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
                 DiscoveryResultBuilder builder = DiscoveryResultBuilder.create(thingUID);
 
                 Map<String, Object> properties = new HashMap<>();
-                properties.put(name, Integer.valueOf(bus.getBusNumber()));
+                properties.put(BUS_ID, Integer.valueOf(bus.getBusNumber()));
                 builder = builder.withProperties(properties);
-                /*
-                 * DiscoveryResult discoveryResult =
-                 * builder.withRepresentationProperty(AllPlayBindingConstants.DEVICE_ID);
-                 */
                 builder = builder.withLabel(name);
                 thingDiscovered(builder.build());
 
                 try {
                     bus.close();
                 } catch (IOException exception) {
-                    logger.info("Can not close I2C bus {}.", number);
+                    logger.error("Can not close I2C bus {}.", number);
                 }
-            } else {
-                File file = new File("/dev/i2c-" + String.valueOf(number));
-                file.delete();
             }
 
         }
@@ -90,19 +86,19 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
 
     @Override
     protected void stopScan() {
-        logger.info("Stopping scan for I2C bridge.");
+        logger.debug("Stop scan for I2C bridge.");
         super.stopScan();
     }
 
     @Override
     protected void startBackgroundDiscovery() {
-        logger.trace("Starting background scan for I2C bridge.");
+        logger.debug("Start background scan for I2C bridge.");
         startScan();
     }
 
     @Override
     protected void stopBackgroundDiscovery() {
-        logger.trace("Stopping background scan for I2C bridge.");
+        logger.debug("Stop background scan for I2C bridge.");
         stopScan();
     }
 
@@ -110,5 +106,4 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
     public void deactivate() {
         removeOlderResults(getTimestampOfLastScan());
     }
-
 }

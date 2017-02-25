@@ -26,7 +26,7 @@ public class I2CBindingConstants {
     public final static ThingTypeUID THING_TYPE_MCP3424 = new ThingTypeUID(BINDING_ID, "MCP3424");
 
     // Bridge config properties
-    public static final String BUS_ID = "bus";
+    public static final String BUS_ID = "id";
 
     // Device config properties
     public static final String DEVICE_TYPE = "type";
