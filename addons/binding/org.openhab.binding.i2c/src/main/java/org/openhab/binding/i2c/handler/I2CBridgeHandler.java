@@ -60,6 +60,10 @@ public class I2CBridgeHandler extends BaseBridgeHandler {
      */
     @Override
     public void handleRemoval() {
+        for (Thing thing : getThing().getThings()) {
+            ThingHandler handler = thing.getHandler();
+            handler.handleRemoval();
+        }
         super.handleRemoval();
     }
 
@@ -114,11 +118,5 @@ public class I2CBridgeHandler extends BaseBridgeHandler {
     @Override
     public void childHandlerDisposed(ThingHandler childHandler, Thing childThing) {
         super.childHandlerDisposed(childHandler, childThing);
-    }
-
-    @Override
-    public void thingUpdated(Thing thing) {
-        // TODO Auto-generated method stub
-        super.thingUpdated(thing);
     }
 }

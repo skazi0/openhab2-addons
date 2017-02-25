@@ -63,6 +63,9 @@ public class I2CDeviceHandler extends BaseThingHandler {
         // }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize() {
         super.initialize();
@@ -75,5 +78,13 @@ public class I2CDeviceHandler extends BaseThingHandler {
         // as expected. E.g.
         // updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
         // "Can not access device as username and/or password are invalid");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 }
