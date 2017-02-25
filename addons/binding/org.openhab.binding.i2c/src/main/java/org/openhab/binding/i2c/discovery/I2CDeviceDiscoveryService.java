@@ -100,7 +100,7 @@ public class I2CDeviceDiscoveryService extends AbstractDiscoveryService {
                     properties.put(DEVICE_ADDRESS, Integer.valueOf(address));
                     builder = builder.withProperties(properties);
                     builder = builder.withBridge(bridge.getThing().getUID());
-                    builder = builder.withLabel(name);
+                    builder = builder.withLabel("DEVICE_0x" + Integer.toHexString(address));
                     thingDiscovered(builder.build());
                 }
             }
