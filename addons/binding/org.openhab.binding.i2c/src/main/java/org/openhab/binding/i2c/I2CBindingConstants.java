@@ -21,17 +21,18 @@ public class I2CBindingConstants {
 
     // List of all Thing Type UIDs
     public final static ThingTypeUID THING_TYPE_BUS = new ThingTypeUID(BINDING_ID, "bus");
+    public final static ThingTypeUID THING_TYPE_DEVICE = new ThingTypeUID(BINDING_ID, "device");
 
-    public final static ThingTypeUID THING_TYPE_MCP23017 = new ThingTypeUID(BINDING_ID, "MCP23017");
-    public final static ThingTypeUID THING_TYPE_MCP3424 = new ThingTypeUID(BINDING_ID, "MCP3424");
+    // public final static ThingTypeUID THING_TYPE_MCP23017 = new ThingTypeUID(BINDING_ID, "MCP23017");
+    // public final static ThingTypeUID THING_TYPE_MCP3424 = new ThingTypeUID(BINDING_ID, "MCP3424");
 
     // Bridge config properties
     public static final String BUS_ID = "id";
 
     // Device config properties
-    public static final String DEVICE_TYPE = "type";
+    // public static final String DEVICE_TYPE = "type";
     public static final String DEVICE_ADDRESS = "address";
-    public static final String REFRESH_INTERVAL = "refresh";
+    // public static final String REFRESH_INTERVAL = "refresh";
 
     // List of all Channel ids
     public final static String DI00 = "DI00";

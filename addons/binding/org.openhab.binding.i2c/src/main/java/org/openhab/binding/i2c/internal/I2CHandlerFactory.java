@@ -15,6 +15,7 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.openhab.binding.i2c.handler.I2CBridgeHandler;
+import org.openhab.binding.i2c.handler.I2CDeviceHandler;
 import org.osgi.service.component.ComponentContext;
 
 import com.pi4j.io.gpio.GpioController;
@@ -51,6 +52,8 @@ public class I2CHandlerFactory extends BaseThingHandlerFactory {
     protected ThingHandler createHandler(Thing thing) {
         if (THING_TYPE_BUS.equals(thing.getThingTypeUID()) && (thing instanceof Bridge)) {
             return new I2CBridgeHandler((Bridge) thing);
+        } else if (THING_TYPE_DEVICE.equals(thing.getThingTypeUID())) {
+            return new I2CDeviceHandler(thing);
         }
 
         return null;

@@ -48,6 +48,12 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
     }
 
     @Override
+    public void deactivate() {
+        super.deactivate();
+        removeOlderResults(getTimestampOfLastScan());
+    }
+
+    @Override
     protected void startScan() {
         logger.debug("Start scan for I2C bridge.");
 
@@ -85,7 +91,7 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
     }
 
     @Override
-    protected void stopScan() {
+    protected synchronized void stopScan() {
         logger.debug("Stop scan for I2C bridge.");
         super.stopScan();
     }
@@ -100,10 +106,5 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
     protected void stopBackgroundDiscovery() {
         logger.debug("Stop background scan for I2C bridge.");
         stopScan();
-    }
-
-    @Override
-    public void deactivate() {
-        removeOlderResults(getTimestampOfLastScan());
     }
 }
