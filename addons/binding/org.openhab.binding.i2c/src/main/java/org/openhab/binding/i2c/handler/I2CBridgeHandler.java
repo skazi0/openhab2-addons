@@ -36,23 +36,18 @@ import org.slf4j.LoggerFactory;
 public class I2CBridgeHandler extends BaseBridgeHandler {
     private final Logger logger = LoggerFactory.getLogger(I2CBridgeHandler.class);
 
-    private I2CDeviceDiscoveryService service;
-    private ServiceRegistration<?> registration;
+    private ServiceRegistration<?> service;
 
     public I2CBridgeHandler(Bridge bridge) {
         super(bridge);
     }
 
     public Integer getBusId() {
-        Integer result = null;
-        Configuration config = getConfig();
-        if (config.containsKey(BUS_ID)) {
-            Object entry = config.get(BUS_ID);
-            if (entry instanceof Integer) {
-                result = (Integer) entry;
-            }
+        final Object entry = getConfigParameter(BUS_ID);
+        if (entry instanceof Integer) {
+            return (Integer) entry;
         }
-        return result;
+        return null;
     }
 
     /**
@@ -80,12 +75,13 @@ public class I2CBridgeHandler extends BaseBridgeHandler {
         if ((getBusId() != null) && (bundleContext != null)) {
             super.initialize();
 
-            service = new I2CDeviceDiscoveryService(this);
+            I2CDeviceDiscoveryService discovery = new I2CDeviceDiscoveryService(this);
             final Dictionary<String, ?> properties = new Hashtable<String, Object>();
-            registration = bundleContext.registerService(DiscoveryService.class.getName(), service, properties);
-            service.activate();
+            service = bundleContext.registerService(DiscoveryService.class.getName(), discovery, properties);
+            discovery.activate();
         } else {
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "I2C bus id is null");
+            final String message = "I2C bus id is null.";
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, message);
             dispose();
         }
     }
@@ -97,16 +93,13 @@ public class I2CBridgeHandler extends BaseBridgeHandler {
     public void dispose() {
         super.dispose();
 
-        if (service != null) {
-            service.stopScan();
-            if ((registration != null) && (bundleContext != null)) {
-                ServiceReference<?> reference = registration.getReference();
-                ((I2CDeviceDiscoveryService) bundleContext.getService(reference)).deactivate();
-
-                registration.unregister();
-                registration = null;
-                service = null;
-            }
+        if ((bundleContext != null) && (service != null)) {
+            ServiceReference<?> reference = service.getReference();
+            I2CDeviceDiscoveryService discovery = (I2CDeviceDiscoveryService) bundleContext.getService(reference);
+            discovery.stopScan();
+            discovery.deactivate();
+            service.unregister();
+            service = null;
         }
     }
 
@@ -118,5 +111,14 @@ public class I2CBridgeHandler extends BaseBridgeHandler {
     @Override
     public void childHandlerDisposed(ThingHandler childHandler, Thing childThing) {
         super.childHandlerDisposed(childHandler, childThing);
+    }
+
+    private Object getConfigParameter(final String name) {
+        Object result = null;
+        Configuration config = getConfig();
+        if (config.containsKey(name)) {
+            result = config.get(name);
+        }
+        return result;
     }
 }

@@ -12,8 +12,6 @@ import static org.openhab.binding.i2c.I2CBindingConstants.*;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
@@ -55,17 +53,17 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
 
     @Override
     protected void startScan() {
-        logger.debug("Start scan for I2C bridge.");
+        logger.debug("Start scan for I2C bridges");
 
         for (int number = I2CBus.BUS_0; number < I2CBus.BUS_17; ++number) {
             I2CBus bus = null;
             try {
                 bus = I2CFactory.getInstance(number);
             } catch (IOException exception) {
-                logger.error("I/O error on I2C bus {} occurred.", number);
+                logger.error("I/O error on I2C bus {} occurred", number);
                 bus = null;
             } catch (UnsupportedBusNumberException exception) {
-                logger.debug("Unsupported I2C bus {} required.", number);
+                logger.debug("Unsupported I2C bus {} required", number);
                 bus = null;
             }
 
@@ -74,16 +72,14 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
                 ThingUID thingUID = new ThingUID(THING_TYPE_BUS, name);
                 DiscoveryResultBuilder builder = DiscoveryResultBuilder.create(thingUID);
 
-                Map<String, Object> properties = new HashMap<>();
-                properties.put(BUS_ID, Integer.valueOf(bus.getBusNumber()));
-                builder = builder.withProperties(properties);
+                builder = builder.withProperty(BUS_ID, Integer.valueOf(bus.getBusNumber()));
                 builder = builder.withLabel(name);
                 thingDiscovered(builder.build());
 
                 try {
                     bus.close();
                 } catch (IOException exception) {
-                    logger.error("Can not close I2C bus {}.", number);
+                    logger.error("Can not close I2C bus {}", number);
                 }
             }
 
@@ -92,19 +88,19 @@ public class I2CBridgeDiscoveryService extends AbstractDiscoveryService {
 
     @Override
     protected synchronized void stopScan() {
-        logger.debug("Stop scan for I2C bridge.");
+        logger.debug("Stop scan for I2C bridge");
         super.stopScan();
     }
 
     @Override
     protected void startBackgroundDiscovery() {
-        logger.debug("Start background scan for I2C bridge.");
+        logger.debug("Start background scan for I2C bridge");
         startScan();
     }
 
     @Override
     protected void stopBackgroundDiscovery() {
-        logger.debug("Stop background scan for I2C bridge.");
+        logger.debug("Stop background scan for I2C bridge");
         stopScan();
     }
 }

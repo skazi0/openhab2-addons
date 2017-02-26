@@ -12,8 +12,6 @@ import static org.openhab.binding.i2c.I2CBindingConstants.*;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
@@ -69,7 +67,7 @@ public class I2CDeviceDiscoveryService extends AbstractDiscoveryService {
 
     @Override
     protected void startScan() {
-        logger.debug("Starting scan for I2C devices.");
+        logger.debug("Starting scan for I2C devices");
 
         I2CBus bus = null;
         try {
@@ -83,7 +81,7 @@ public class I2CDeviceDiscoveryService extends AbstractDiscoveryService {
         }
 
         if (bus != null) {
-            for (int address = 0; address < 128; address++) {
+            for (int address = 3; address < 128; address++) {
                 I2CDevice device = null;
                 try {
                     device = bus.getDevice(address);
@@ -92,15 +90,14 @@ public class I2CDeviceDiscoveryService extends AbstractDiscoveryService {
                     device = null;
                 }
                 if (device != null) {
-                    String name = "DEVICE_" + String.valueOf(address);
-                    ThingUID thingUID = new ThingUID(THING_TYPE_DEVICE, name);
+                    final String prefix = "DEVICE_";
+                    ThingUID bridgeUID = bridge.getThing().getUID();
+                    ThingUID thingUID = new ThingUID(THING_TYPE_DEVICE, bridgeUID, prefix + String.valueOf(address));
                     DiscoveryResultBuilder builder = DiscoveryResultBuilder.create(thingUID);
 
-                    Map<String, Object> properties = new HashMap<>();
-                    properties.put(DEVICE_ADDRESS, Integer.valueOf(address));
-                    builder = builder.withProperties(properties);
-                    builder = builder.withBridge(bridge.getThing().getUID());
-                    builder = builder.withLabel("DEVICE_0x" + Integer.toHexString(address));
+                    builder = builder.withProperty(DEVICE_ADDRESS, Integer.valueOf(address));
+                    builder = builder.withBridge(bridgeUID);
+                    builder = builder.withLabel(prefix + "0x" + Integer.toHexString(address));
                     thingDiscovered(builder.build());
                 }
             }
@@ -110,19 +107,19 @@ public class I2CDeviceDiscoveryService extends AbstractDiscoveryService {
 
     @Override
     public synchronized void stopScan() {
-        logger.info("Stopping scan for I2C devices");
+        logger.debug("Stopping scan for I2C devices");
         super.stopScan();
     }
 
     @Override
     protected void startBackgroundDiscovery() {
-        logger.trace("Starting background scan for I2C devices");
+        logger.debug("Starting background scan for I2C devices");
         startScan();
     }
 
     @Override
     protected void stopBackgroundDiscovery() {
-        logger.trace("Stopping background scan for I2C devices");
+        logger.debug("Stopping background scan for I2C devices");
         stopScan();
     }
 }
