@@ -14,9 +14,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openhab.binding.rfxcom.internal.config.RFXComBridgeConfiguration;
 import org.openhab.binding.rfxcom.internal.exceptions.RFXComException;
 import org.openhab.binding.rfxcom.internal.exceptions.RFXComMessageNotImplementedException;
 import org.openhab.binding.rfxcom.internal.messages.RFXComBaseMessage.PacketType;
+import org.openhab.binding.rfxcom.internal.messages.RFXComInterfaceMessage.TransceiverType;
 
 public class RFXComMessageFactory {
 
@@ -24,7 +26,7 @@ public class RFXComMessageFactory {
     private static final Map<PacketType, Class<? extends RFXComMessage>> MESSAGE_CLASSES = Collections
             .unmodifiableMap(new HashMap<PacketType, Class<? extends RFXComMessage>>() {
                 {
-                    put(PacketType.INTERFACE_CONTROL, RFXComControlMessage.class);
+                    put(PacketType.INTERFACE_CONTROL, RFXComInterfaceControlMessage.class);
                     put(PacketType.INTERFACE_MESSAGE, RFXComInterfaceMessage.class);
                     put(PacketType.TRANSMITTER_MESSAGE, RFXComTransmitterMessage.class);
                     put(PacketType.UNDECODED_RF_MESSAGE, RFXComUndecodedRFMessage.class);
@@ -34,7 +36,7 @@ public class RFXComMessageFactory {
                     put(PacketType.LIGHTING4, RFXComLighting4Message.class);
                     put(PacketType.LIGHTING5, RFXComLighting5Message.class);
                     put(PacketType.LIGHTING6, RFXComLighting6Message.class);
-                    // put(PacketType.CHIME, RFXComChimeMessage.class);
+                    put(PacketType.CHIME, RFXComChimeMessage.class);
                     // put(PacketType.FAN, RFXComFanMessage.class);
                     put(PacketType.CURTAIN1, RFXComCurtain1Message.class);
                     put(PacketType.BLINDS1, RFXComBlinds1Message.class);
