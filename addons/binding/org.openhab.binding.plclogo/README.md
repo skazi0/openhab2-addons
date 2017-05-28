@@ -215,13 +215,19 @@ DateTime Logo2_RTC      {channel="plclogo:device:Logo2:rtc}
 
 ## Troubleshooting
 
-**Log shows Reader was created but no communication with LOGO! possible**
+**LOGO! bridge will not go online**
+
+Be sure to have only one bridge for each LOGO! device.
+
+**Log shows reader was created but no communication with LOGO! possible**
 
 Check TSAP values: localTSAP and remoteTSAP should not be the same. You have to choose different addresses.
 
 **openHAB is starting without errors but no reader was created for the LOGO!**
 
-If all configuration parameters were checked and fine, it maybe possible that the network interface of the LOGO! is crashed. To recover stop openHAB, cold boot your LOGO! (power off/on) and reflash the program with LOGO! SoftComfort. Then restart openHAB and check logging for a created reader.
+If all configuration parameters were checked and fine, it maybe possible that the network interface of the LOGO! is crashed.
+To recover stop openHAB, cold boot your LOGO! (power off/on) and reflash the program with LOGO! SoftComfort. Then restart
+openHAB and check logging for a created reader.
 
 **RTC value differs from the value shown in LOGO! (0BA7)**
 
