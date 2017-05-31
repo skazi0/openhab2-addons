@@ -98,12 +98,12 @@ public class PLCLogoClient extends S7Client {
             }
 
             if (retry == MAX_RETRY_NUMBER) {
-                logger.debug("Giving up to read after {} retries.", MAX_RETRY_NUMBER);
+                logger.warn("Giving up to read after {} retries.", MAX_RETRY_NUMBER);
                 break;
             }
 
             if (result != 0) {
-                logger.debug("Reconnect during read: {}.", ErrorText(result));
+                logger.warn("Reconnect during read: {}.", ErrorText(result));
                 retry = retry + 1;
                 Disconnect();
                 Connect();
@@ -154,12 +154,12 @@ public class PLCLogoClient extends S7Client {
             result = super.WriteArea(Area, DBNumber, Start, Amount, WordLength, Data);
 
             if (retry == MAX_RETRY_NUMBER) {
-                logger.debug("Giving up to write after {} retries.", MAX_RETRY_NUMBER);
+                logger.warn("Giving up to write after {} retries.", MAX_RETRY_NUMBER);
                 break;
             }
 
             if (result != 0) {
-                logger.debug("Reconnect during write: {}.", ErrorText(result));
+                logger.warn("Reconnect during write: {}.", ErrorText(result));
                 retry = retry + 1;
                 Disconnect();
                 Connect();
