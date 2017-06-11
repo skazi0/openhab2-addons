@@ -61,7 +61,9 @@ public class RFXComBindingConstants {
     public static final String CHANNEL_MOOD = "mood";
     public static final String CHANNEL_SIGNAL_LEVEL = "signalLevel";
     public static final String CHANNEL_DIMMING_LEVEL = "dimmingLevel";
+    public static final String CHANNEL_UV = "uv";
     public static final String CHANNEL_TEMPERATURE = "temperature";
+    public static final String CHANNEL_CHILL_TEMPERATURE = "chillTemperature";
     public static final String CHANNEL_HUMIDITY = "humidity";
     public static final String CHANNEL_HUMIDITY_STATUS = "humidityStatus";
     public static final String CHANNEL_BATTERY_LEVEL = "batteryLevel";
@@ -72,8 +74,7 @@ public class RFXComBindingConstants {
     public static final String CHANNEL_RAIN_TOTAL = "rainTotal";
     public static final String CHANNEL_WIND_DIRECTION = "windDirection";
     public static final String CHANNEL_WIND_SPEED = "windSpeed";
-    public static final String CHANNEL_GUST = "gust";
-    public static final String CHANNEL_CHILL_FACTOR = "chillFactor";
+    public static final String CHANNEL_AVG_WIND_SPEED = "avgWindSpeed";
     public static final String CHANNEL_INSTANT_POWER = "instantPower";
     public static final String CHANNEL_TOTAL_USAGE = "totalUsage";
     public static final String CHANNEL_INSTANT_AMPS = "instantAmp";
@@ -84,6 +85,9 @@ public class RFXComBindingConstants {
     public static final String CHANNEL_STATUS = "status";
     public static final String CHANNEL_MOTION = "motion";
     public static final String CHANNEL_CONTACT = "contact";
+    public static final String CHANNEL_CONTACT_1 = "contact1";
+    public static final String CHANNEL_CONTACT_2 = "contact2";
+    public static final String CHANNEL_CONTACT_3 = "contact3";
     public static final String CHANNEL_VOLTAGE = "voltage";
     public static final String CHANNEL_SET_POINT = "setpoint";
     public static final String CHANNEL_DATE_TIME = "dateTime";

@@ -169,9 +169,6 @@ public class RFXComHandler extends BaseThingHandler implements DeviceMessageList
                                     updateState(CHANNEL_BATTERY_LEVEL, convertBatteryLevelToSystemWideLevel(
                                             message.convertToState(valueSelector)));
                                     break;
-                                case CHILL_FACTOR:
-                                    updateState(CHANNEL_CHILL_FACTOR, message.convertToState(valueSelector));
-                                    break;
                                 case CHIME_SOUND:
                                     updateState(CHANNEL_CHIME_SOUND, message.convertToState(valueSelector));
                                     break;
@@ -184,14 +181,20 @@ public class RFXComHandler extends BaseThingHandler implements DeviceMessageList
                                 case CONTACT:
                                     updateState(CHANNEL_CONTACT, message.convertToState(valueSelector));
                                     break;
+                                case CONTACT_1:
+                                    updateState(CHANNEL_CONTACT_1, message.convertToState(valueSelector));
+                                    break;
+                                case CONTACT_2:
+                                    updateState(CHANNEL_CONTACT_2, message.convertToState(valueSelector));
+                                    break;
+                                case CONTACT_3:
+                                    updateState(CHANNEL_CONTACT_3, message.convertToState(valueSelector));
+                                    break;
                                 case DIMMING_LEVEL:
                                     updateState(CHANNEL_DIMMING_LEVEL, message.convertToState(valueSelector));
                                     break;
                                 case FORECAST:
                                     updateState(CHANNEL_FORECAST, message.convertToState(valueSelector));
-                                    break;
-                                case GUST:
-                                    updateState(CHANNEL_GUST, message.convertToState(valueSelector));
                                     break;
                                 case HUMIDITY:
                                     updateState(CHANNEL_HUMIDITY, message.convertToState(valueSelector));
@@ -247,17 +250,26 @@ public class RFXComHandler extends BaseThingHandler implements DeviceMessageList
                                 case TEMPERATURE:
                                     updateState(CHANNEL_TEMPERATURE, message.convertToState(valueSelector));
                                     break;
+                                case CHILL_TEMPERATURE:
+                                    updateState(CHANNEL_TEMPERATURE, message.convertToState(valueSelector));
+                                    break;
                                 case TOTAL_AMP_HOUR:
                                     updateState(CHANNEL_TOTAL_AMP_HOUR, message.convertToState(valueSelector));
                                     break;
                                 case TOTAL_USAGE:
                                     updateState(CHANNEL_TOTAL_USAGE, message.convertToState(valueSelector));
                                     break;
+                                case UV:
+                                    updateState(CHANNEL_UV, message.convertToState(valueSelector));
+                                    break;
                                 case VOLTAGE:
                                     updateState(CHANNEL_VOLTAGE, message.convertToState(valueSelector));
                                     break;
                                 case WIND_DIRECTION:
                                     updateState(CHANNEL_WIND_DIRECTION, message.convertToState(valueSelector));
+                                    break;
+                                case AVG_WIND_SPEED:
+                                    updateState(CHANNEL_AVG_WIND_SPEED, message.convertToState(valueSelector));
                                     break;
                                 case WIND_SPEED:
                                     updateState(CHANNEL_WIND_SPEED, message.convertToState(valueSelector));
