@@ -54,6 +54,7 @@
     <module>org.openhab.binding.minecraft</module>
     <module>org.openhab.binding.netatmo</module>
     <module>org.openhab.binding.network</module>
+    <module>org.openhab.binding.nikohomecontrol</module>
     <module>org.openhab.binding.oceanic</module>
     <module>org.openhab.binding.onkyo</module>
     <module>org.openhab.binding.opensprinkler</module>
@@ -78,6 +79,7 @@
     <module>org.openhab.binding.urtsi</module>
     <module>org.openhab.binding.vitotronic</module>
     <module>org.openhab.binding.wifiled</module>
+    <module>org.openhab.binding.windcentrale</module>
     <module>org.openhab.binding.yamahareceiver</module>
     <module>org.openhab.binding.zoneminder</module>
     <module>org.openhab.binding.zway</module>
