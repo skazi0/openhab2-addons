@@ -67,6 +67,12 @@
         <feature>openhab-runtime-base</feature>
         <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.coolmasternet/${project.version}</bundle>
     </feature>
+    
+    <feature name="openhab-binding-dlinksmarthome" description="D-Link Smart Home Binding" version="${project.version}">
+        <feature>openhab-runtime-base</feature>
+        <feature>openhab-transport-mdns</feature>
+        <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.dlinksmarthome/${project.version}</bundle>
+    </feature>
 
     <feature name="openhab-binding-dscalarm" description="DSCAlarm Binding" version="${project.version}">
         <feature>openhab-runtime-base</feature>
@@ -200,6 +206,11 @@
         <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.network/${project.version}</bundle>
     </feature>
 
+    <feature name="openhab-binding-nikohomecontrol" description="Niko Home Control Binding" version="${project.version}">
+        <feature>openhab-runtime-base</feature>
+        <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.nikohomecontrol/${project.version}</bundle>
+    </feature>
+
     <feature name="openhab-binding-oceanic" description="Oceanic Binding" version="${project.version}">
         <feature>openhab-runtime-base</feature>
         <feature>openhab-transport-serial</feature>
@@ -258,6 +269,11 @@
         <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.samsungtv/${project.version}</bundle>
     </feature>
 
+    <feature name="openhab-binding-sensebox" description="Sensebox Binding" version="${project.version}">
+        <feature>openhab-runtime-base</feature>
+        <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.sensebox/${project.version}</bundle>
+    </feature>
+
     <feature name="openhab-binding-silvercrestwifisocket" description="Silvercrest Wifi Plug Binding" version="${project.version}">
         <feature>openhab-runtime-base</feature>
         <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.silvercrestwifisocket/${project.version}</bundle>
@@ -313,6 +329,11 @@
     <feature name="openhab-binding-wifiled" description="WiFi LED Binding" version="${project.version}">
         <feature>openhab-runtime-base</feature>
         <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.wifiled/${project.version}</bundle>
+    </feature>
+
+    <feature name="openhab-binding-windcentrale" description="Windcentrale Binding" version="${project.version}">
+        <feature>openhab-runtime-base</feature>
+        <bundle start-level="80">mvn:org.openhab.binding/org.openhab.binding.windcentrale/${project.version}</bundle>
     </feature>
 
     <feature name="openhab-binding-yamahareceiver" description="Yamaha Receiver Binding" version="${project.version}">
