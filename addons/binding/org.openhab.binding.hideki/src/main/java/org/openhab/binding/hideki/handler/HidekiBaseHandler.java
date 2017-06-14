@@ -137,8 +137,8 @@ public abstract class HidekiBaseHandler extends BaseThingHandler {
      *
      * @return Decoded sensor type
      */
-    protected int getDecodedType() {
-        return getDecodedType(data);
+    protected static int getDecodedType(final int[] data) {
+        return (data == null) || (data.length < 4) ? -1 : data[3] & 0x1F;
     }
 
     /**
@@ -185,16 +185,6 @@ public abstract class HidekiBaseHandler extends BaseThingHandler {
      */
     public int getMessageNumber() {
         return data.length < 4 ? -1 : data[3] >> 6;
-    }
-
-    /**
-     * Returns decoded sensor type. Is negative, if decoder failed
-     * or no data available.
-     *
-     * @return Decoded sensor type
-     */
-    private static int getDecodedType(final int[] data) {
-        return (data == null) || (data.length < 4) ? -1 : data[3] & 0x1F;
     }
 
 }
