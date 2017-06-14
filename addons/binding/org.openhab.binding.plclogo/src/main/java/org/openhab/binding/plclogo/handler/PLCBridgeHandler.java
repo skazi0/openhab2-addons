@@ -306,7 +306,7 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
             final String host = config.getAddress();
             if (readerJob == null) {
                 final Integer interval = config.getRefreshRate();
-                logger.info("Creating new reader job for {} with interval {} ms.", host, interval.toString());
+                logger.info("Creating new reader job for {} with interval {} ms.", host, interval);
                 readerJob = scheduler.scheduleWithFixedDelay(dataReader, 100, interval, TimeUnit.MILLISECONDS);
             }
             if (rtcJob == null) {
