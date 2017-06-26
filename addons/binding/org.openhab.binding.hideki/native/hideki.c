@@ -246,7 +246,7 @@ void* decode(void* parameter)
 //      fprintf(LogFile, "%u %d\n", duration, edge);
     }
     
-    if(duration < 25) { // Filter pulses shorter than 25 microseconds
+    if(duration < 20) { // Filter pulses shorter than 20 microseconds
       continue;
     }
   
