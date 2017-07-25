@@ -59,12 +59,12 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.singleton(THING_TYPE_DEVICE);
 
     // S7 client this bridge belongs to
-    private volatile PLCLogoClient client = null;
-    private Set<PLCBlockHandler> handlers = new HashSet<PLCBlockHandler>();
+    private volatile PLCLogoClient client;
+    private Set<PLCBlockHandler> handlers = new HashSet<>();
     private PLCLogoBridgeConfiguration config = getConfigAs(PLCLogoBridgeConfiguration.class);
 
     private Calendar rtc = Calendar.getInstance();
-    private ScheduledFuture<?> rtcJob = null;
+    private ScheduledFuture<?> rtcJob;
     private final Runnable rtcReader = new Runnable() {
         // Buffer for diagnostic data
         private final byte[] data = { 0, 0, 0, 0, 0, 0, 0 };

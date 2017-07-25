@@ -21,7 +21,7 @@ import java.util.Objects;
 public class PLCLogoAnalogConfiguration extends PLCLogoBlockConfiguration {
 
     private Integer threshold = 0;
-    private String type = null;
+    private String type;
 
     /**
      * Get Siemens LOGO! device blocks update threshold.

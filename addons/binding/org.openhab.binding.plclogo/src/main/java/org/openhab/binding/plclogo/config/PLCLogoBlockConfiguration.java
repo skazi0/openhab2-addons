@@ -20,7 +20,7 @@ import org.openhab.binding.plclogo.PLCLogoBindingConstants;
  */
 public abstract class PLCLogoBlockConfiguration {
 
-    private String block = null;
+    private String block;
     private Boolean force = false;
 
     /**

@@ -57,8 +57,7 @@ public class PLCDiscoveryService extends AbstractDiscoveryService {
     private static final int CONNECTION_TIMEOUT = 500;
     private TreeSet<String> addresses = new TreeSet<String>();
 
-    private ExecutorService executor = null;
-
+    private ExecutorService executor;
     private class Runner implements Runnable {
         private final ReentrantLock lock = new ReentrantLock();
         private final String host;
