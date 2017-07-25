@@ -16,10 +16,6 @@ package org.openhab.binding.plclogo.config;
  */
 public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
 
-    public PLCLogoDigitalConfiguration() {
-        super();
-    }
-
     /**
      * {@inheritDoc}
      */

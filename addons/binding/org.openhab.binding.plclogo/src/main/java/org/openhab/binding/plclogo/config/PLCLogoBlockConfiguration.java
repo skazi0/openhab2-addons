@@ -23,9 +23,6 @@ public abstract class PLCLogoBlockConfiguration {
     private String block = null;
     private Boolean force = false;
 
-    public PLCLogoBlockConfiguration() {
-    }
-
     /**
      * Get configured Siemens LOGO! device block name.
      *

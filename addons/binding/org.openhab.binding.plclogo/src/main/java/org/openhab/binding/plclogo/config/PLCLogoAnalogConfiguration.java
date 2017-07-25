@@ -23,10 +23,6 @@ public class PLCLogoAnalogConfiguration extends PLCLogoBlockConfiguration {
     private Integer threshold = 0;
     private String type = null;
 
-    public PLCLogoAnalogConfiguration() {
-        super();
-    }
-
     /**
      * Get Siemens LOGO! device blocks update threshold.
      *

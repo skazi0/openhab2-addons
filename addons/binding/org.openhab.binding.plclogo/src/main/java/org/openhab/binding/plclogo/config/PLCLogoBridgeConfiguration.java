@@ -25,9 +25,6 @@ public class PLCLogoBridgeConfiguration {
     private String remoteTSAP = null;
     private Integer refresh = 100;
 
-    public PLCLogoBridgeConfiguration() {
-    }
-
     /**
      * Get configured Siemens LOGO! device IP address.
      *
