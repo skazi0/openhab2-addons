@@ -16,9 +16,6 @@ package org.openhab.binding.plclogo.config;
  */
 public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBlockValid() {
         boolean valid = false;
@@ -42,18 +39,12 @@ public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
         return valid;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isInputBlock() {
         final String kind = getBlockKind();
         return kind.equalsIgnoreCase("I") || kind.equalsIgnoreCase("NI");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getItemType() {
         return isInputBlock() ? "Contact" : "Switch";

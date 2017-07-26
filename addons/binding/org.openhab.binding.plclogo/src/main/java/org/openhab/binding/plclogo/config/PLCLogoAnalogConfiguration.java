@@ -61,9 +61,6 @@ public class PLCLogoAnalogConfiguration extends PLCLogoBlockConfiguration {
         this.type = type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBlockValid() {
         boolean valid = false;
@@ -84,18 +81,12 @@ public class PLCLogoAnalogConfiguration extends PLCLogoBlockConfiguration {
         return valid;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isInputBlock() {
         final String kind = getBlockKind();
         return kind.equalsIgnoreCase("AI") || kind.equalsIgnoreCase("NAI");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getItemType() {
         return ANALOG_NUMBER_CHANNEL.equalsIgnoreCase(getType()) ? "Number" : "DateTime";

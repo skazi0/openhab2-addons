@@ -151,15 +151,12 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
     };
 
     /**
-     * {@inheritDoc}
+     * Constructor.
      */
     public PLCBridgeHandler(Bridge bridge) {
         super(bridge);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
         logger.debug("Handle command {} on channel {}", command, channelUID);
@@ -277,9 +274,6 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void initialize() {
         logger.debug("Initialize LOGO! bridge handler.");
@@ -322,9 +316,6 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void dispose() {
         logger.debug("Dispose LOGO! bridge handler.");
@@ -363,9 +354,6 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void childHandlerInitialized(ThingHandler childHandler, Thing childThing) {
         super.childHandlerInitialized(childHandler, childThing);
@@ -383,9 +371,6 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void childHandlerDisposed(ThingHandler childHandler, Thing childThing) {
         if (childHandler instanceof PLCBlockHandler) {
@@ -421,9 +406,6 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         return rtc;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void updateConfiguration(Configuration configuration) {
         super.updateConfiguration(configuration);
