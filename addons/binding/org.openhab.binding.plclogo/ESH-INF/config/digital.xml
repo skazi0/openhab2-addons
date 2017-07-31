@@ -14,6 +14,12 @@
 			<description>LOGO! block or memory address</description>
 			<required>true</required>
 		</parameter>
+        <parameter name="pulse" type="integer">
+            <label>Pulse length</label>
+            <description>Toggle the block state by sending a pulse of the defined length in milliseconds.</description>
+            <default>0</default>
+            <required>false</required>
+        </parameter>
 		<parameter name="force" type="boolean">
 			<label>Force channel update</label>
 			<description>Update of the channel be should propagated to openHAB</description>

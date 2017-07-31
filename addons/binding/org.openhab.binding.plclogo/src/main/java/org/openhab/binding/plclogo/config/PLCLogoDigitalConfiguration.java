@@ -15,6 +15,7 @@ package org.openhab.binding.plclogo.config;
  * @author Alexander Falkenstern - Initial contribution
  */
 public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
+    private int pulse;
 
     @Override
     public boolean isInputBlockValid() {
@@ -60,6 +61,20 @@ public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
             }
         }
         return valid;
+    }
+
+    /**
+     * @return Pulse length
+     */
+    public int getPulseLength() {
+        return pulse;
+    }
+
+    /**
+     * @param pulse PulseLength
+     */
+    public void setPulseLength(int pulse) {
+        this.pulse = pulse;
     }
 
     @Override

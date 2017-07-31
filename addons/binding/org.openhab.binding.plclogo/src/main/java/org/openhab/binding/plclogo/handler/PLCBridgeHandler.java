@@ -210,19 +210,42 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
             final PLCDigitalBlockHandler bHandler = (PLCDigitalBlockHandler) handler;
             final int offset = PLCLogoDataType.getBytesCount(bHandler.getBlockDataType());
             if ((offset > 0) && bHandler.hasInputBlock() && DIGITAL_CHANNEL_ID.equals(channelId)) {
-                final byte[] buffer = new byte[offset];
-                if (command instanceof OnOffType) {
-                    final OnOffType state = (OnOffType) command;
-                    S7.SetBitAt(buffer, 0, 0, state == OnOffType.ON);
-                } else if (command instanceof OpenClosedType) {
-                    final OpenClosedType state = (OpenClosedType) command;
-                    S7.SetBitAt(buffer, 0, 0, state == OpenClosedType.CLOSED);
-                }
-
+                int pulse = bHandler.getPulseLength();
                 final int address = 8 * bHandler.getInputAddress() + bHandler.getInputBit();
-                int result = client.WriteDBArea(1, address, buffer.length, S7Client.S7WLBit, buffer);
-                if (result != 0) {
-                    logger.error("Can not write data to LOGO!: {}.", S7Client.ErrorText(result));
+                if (pulse > 0) {
+                    final byte[] buffer = new byte[offset];
+                    S7.SetBitAt(buffer, 0, 0, true);
+                    int result = client.WriteDBArea(1, address, buffer.length, S7Client.S7WLBit, buffer);
+                    if (result != 0) {
+                        logger.error("Can not write data to LOGO!: {}.", S7Client.ErrorText(result));
+                    } else {
+                        scheduler.schedule(new Runnable() {
+                            @Override
+                            public void run() {
+                                S7.SetBitAt(buffer, 0, 0, false);
+                                synchronized (client) {
+                                    int result = client.WriteDBArea(1, address, buffer.length, S7Client.S7WLBit, buffer);
+                                }
+                                if (result != 0) {
+                                    logger.error("Can not write data to LOGO!: {}.", S7Client.ErrorText(result));
+                                }
+                            }
+                        }, pulse, TimeUnit.MILLISECONDS);
+                    }
+                } else {
+                    final byte[] buffer = new byte[offset];
+                    if (command instanceof OnOffType) {
+                        final OnOffType state = (OnOffType) command;
+                        S7.SetBitAt(buffer, 0, 0, state == OnOffType.ON);
+                    } else if (command instanceof OpenClosedType) {
+                        final OpenClosedType state = (OpenClosedType) command;
+                        S7.SetBitAt(buffer, 0, 0, state == OpenClosedType.CLOSED);
+                    }
+
+                    int result = client.WriteDBArea(1, address, buffer.length, S7Client.S7WLBit, buffer);
+                    if (result != 0) {
+                        logger.error("Can not write data to LOGO!: {}.", S7Client.ErrorText(result));
+                    }
                 }
             } else {
                 logger.warn("Can not update not supported channel: {}.", channelUID);

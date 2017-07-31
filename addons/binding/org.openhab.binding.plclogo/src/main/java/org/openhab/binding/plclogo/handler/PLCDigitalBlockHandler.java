@@ -155,12 +155,13 @@ public class PLCDigitalBlockHandler extends PLCBlockHandler {
         return config.getInputBlockName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getOutputBlockName() {
         return config.getOutputBlockName();
+    }
+
+    public int getPulseLength() {
+        return config.getPulseLength();
     }
 
     @Override
