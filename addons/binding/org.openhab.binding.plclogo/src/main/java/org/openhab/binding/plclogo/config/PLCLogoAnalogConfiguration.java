@@ -62,11 +62,11 @@ public class PLCLogoAnalogConfiguration extends PLCLogoBlockConfiguration {
     }
 
     @Override
-    public boolean isBlockValid() {
+    public boolean isInputBlockValid() {
         boolean valid = false;
-        final String name = getBlockName();
+        final String name = getInputBlockName();
         if (name.length() >= 3) {
-            valid = valid || name.startsWith("AI") || name.startsWith("NAI"); // Inputs
+            valid = valid || name.startsWith("NAI"); // Inputs
             valid = valid || name.startsWith("AQ") || name.startsWith("NAQ"); // Outputs
             valid = valid || name.startsWith("AM"); // Markers
             if (!valid && (name.startsWith("VW") || name.startsWith("VD"))) { // Memory block
@@ -82,9 +82,23 @@ public class PLCLogoAnalogConfiguration extends PLCLogoBlockConfiguration {
     }
 
     @Override
-    public boolean isInputBlock() {
-        final String kind = getBlockKind();
-        return kind.equalsIgnoreCase("AI") || kind.equalsIgnoreCase("NAI");
+    public boolean isOutputBlockValid() {
+        boolean valid = false;
+        final String name = getOutputBlockName();
+        if (name.length() >= 3) {
+            valid = valid || name.startsWith("AI") || name.startsWith("NAI"); // Inputs
+            valid = valid || name.startsWith("AQ") || name.startsWith("NAQ"); // Outputs
+            valid = valid || name.startsWith("AM"); // Markers
+            if (!valid && (name.startsWith("VW") || name.startsWith("VD"))) { // Memory block
+                final String[] parts = name.split("\\.");
+                valid = (parts.length == 1);
+                if (valid && Character.isDigit(parts[0].charAt(2))) {
+                    final int address = Integer.parseInt(parts[0].substring(2));
+                    valid = (0 <= address) && (address <= (name.startsWith("VD") ? 847 : 849));
+                }
+            }
+        }
+        return valid;
     }
 
     @Override

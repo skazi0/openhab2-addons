@@ -20,24 +20,44 @@ import org.openhab.binding.plclogo.PLCLogoBindingConstants;
  */
 public abstract class PLCLogoBlockConfiguration {
 
-    private String block;
+    private String input = null;
+    private String block = null;
     private Boolean force = false;
 
     /**
-     * Get configured Siemens LOGO! device block name.
+     * Get configured Siemens LOGO! device input block name.
      *
-     * @return Configured Siemens LOGO! block name
+     * @return Configured Siemens LOGO! input block name
      */
-    public String getBlockName() {
+    public String getInputBlockName() {
+        return input;
+    }
+
+    /**
+     * Set Siemens LOGO! device input block name.
+     *
+     * @param name Siemens LOGO! input block name
+     */
+    public void setInputBlockName(final String name) {
+        Objects.requireNonNull(name, "PLCLogoBlockConfiguration: Block name may not be null.");
+        this.input = name.trim();
+    }
+
+    /**
+     * Get configured Siemens LOGO! device output block name.
+     *
+     * @return Configured Siemens LOGO! output block name
+     */
+    public String getOutputBlockName() {
         return block;
     }
 
     /**
-     * Set Siemens LOGO! device block name.
+     * Set Siemens LOGO! device output block name.
      *
-     * @param name Siemens LOGO! block name
+     * @param name Siemens LOGO! output block name
      */
-    public void setBlockName(final String name) {
+    public void setOutputBlockName(final String name) {
         Objects.requireNonNull(name, "PLCLogoBlockConfiguration: Block name may not be null.");
         this.block = name.trim();
     }
@@ -62,11 +82,18 @@ public abstract class PLCLogoBlockConfiguration {
     }
 
     /**
-     * Checks if current block configuration is valid.
+     * Checks if current input block configuration is valid.
      *
      * @return True, if the name is valid and false otherwise
      */
-    public abstract boolean isBlockValid();
+    public abstract boolean isInputBlockValid();
+
+    /**
+     * Checks if current output block configuration is valid.
+     *
+     * @return True, if the name is valid and false otherwise
+     */
+    public abstract boolean isOutputBlockValid();
 
     /**
      * Returns configured LOGO! block kind.
@@ -76,7 +103,7 @@ public abstract class PLCLogoBlockConfiguration {
      * @see PLCLogoBindingConstants#LOGO_MEMORY_0BA8
      * @return Kind of configured block
      */
-    public String getBlockKind() {
+    public static String getBlockKind(final String block) {
         if (Character.isDigit(block.charAt(1))) {
             return block.substring(0, 1);
         } else if (Character.isDigit(block.charAt(2))) {
@@ -86,13 +113,6 @@ public abstract class PLCLogoBlockConfiguration {
         }
         return null;
     }
-
-    /**
-     * Returns if block represents input.
-     *
-     * @return True, if block is input and false otherwise
-     */
-    public abstract boolean isInputBlock();
 
     /**
      * Return supported item type for this block.

@@ -36,8 +36,11 @@ public abstract class PLCBlockHandler extends BaseThingHandler {
 
     private final Logger logger = LoggerFactory.getLogger(PLCBlockHandler.class);
 
-    private int address = -1;
-    private int bit = -1;
+    private int inputAddress = -1;
+    private int inputBit = -1;
+
+    private int outputAddress = -1;
+    private int outputBit = -1;
 
     /**
      * Constructor.
@@ -60,13 +63,14 @@ public abstract class PLCBlockHandler extends BaseThingHandler {
 
         String message = "";
         boolean success = false;
-        if (getBlockName() != null) {
+        if (hasInputBlock() || hasOutputBlock()) {
             final Map<?, Integer> block = LOGO_MEMORY_BLOCK.get(getLogoFamily());
-            if ((0 <= getAddress()) && (getAddress() <= block.get("SIZE"))) {
+            if ((0 <= getInputAddress()) && (getInputAddress() <= block.get("SIZE")) && (0 <= getOutputAddress())
+                    && (getOutputAddress() <= block.get("SIZE"))) {
                 success = true;
                 super.initialize();
             } else {
-                message = "Can not initialize LOGO! block " + getBlockName() + ".";
+                message = "Can not initialize LOGO! block " + getOutputBlockName() + ".";
             }
         } else {
             message = "Can not initialize LOGO! block. Please check blocks.";
@@ -81,40 +85,91 @@ public abstract class PLCBlockHandler extends BaseThingHandler {
     public void dispose() {
         logger.debug("Dispose LOGO! common block handler.");
         super.dispose();
-        address = -1;
-        bit = -1;
+        inputAddress = -1;
+        inputBit = -1;
+        outputAddress = -1;
+        outputBit = -1;
     }
 
     /**
-     * Calculate memory address for configured block.
+     * Returns if input block is configured.
+     *
+     * @return True if input block is configure
+     */
+    public boolean hasInputBlock() {
+        return getInputBlockName() != null;
+    }
+
+    /**
+     * Returns if output block is configured.
+     *
+     * @return True if output block is configure
+     */
+    public boolean hasOutputBlock() {
+        return getOutputBlockName() != null;
+    }
+
+    /**
+     * Calculate input memory address for configured block.
      *
      * @return Calculated address
      */
-    public int getAddress() {
-        if (address == -1) {
-            address = getAddress(getBlockName());
+    public int getInputAddress() {
+        if (inputAddress == -1) {
+            inputAddress = getAddressOfInputBlock();
         }
-        return address;
+        return inputAddress;
     }
 
     /**
-     * Calculate bit within memory address for configured block.
+     * Calculate input bit within memory address for configured block.
      *
      * @return Calculated bit
      */
-    public int getBit() {
-        if (bit == -1) {
-            bit = getBit(getBlockName());
+    public int getInputBit() {
+        if (inputBit == -1) {
+            inputBit = getBitOfInputBlock();
         }
-        return bit;
+        return inputBit;
     }
 
     /**
-     * Returns configured block name.
+     * Calculate output memory address for configured block.
+     *
+     * @return Calculated address
+     */
+    public int getOutputAddress() {
+        if (outputAddress == -1) {
+            outputAddress = getAddressOfOutputBlock();
+        }
+        return outputAddress;
+    }
+
+    /**
+     * Calculate input bit within memory address for configured block.
+     *
+     * @return Calculated bit
+     */
+    public int getOutputBit() {
+        if (outputBit == -1) {
+            outputBit = getBitOfOutputBlock();
+        }
+        return outputBit;
+    }
+
+    /**
+     * Returns configured input block name.
      *
      * @return Name of configured LOGO! block
      */
-    public abstract String getBlockName();
+    public abstract String getInputBlockName();
+
+    /**
+     * Returns configured input block name.
+     *
+     * @return Name of configured LOGO! block
+     */
+    public abstract String getOutputBlockName();
 
     /**
      * Update value channel of current thing with new data.
@@ -151,24 +206,38 @@ public abstract class PLCBlockHandler extends BaseThingHandler {
     @Override
     protected void updateConfiguration(Configuration configuration) {
         super.updateConfiguration(configuration);
-        address = -1;
-        bit = -1;
+        inputAddress = -1;
+        inputBit = -1;
+        outputAddress = -1;
+        outputBit = -1;
     }
 
     /**
-     * Calculate address for the block with given name.
+     * Calculate address for the input block.
      *
-     * @param name Name of the LOGO! block
      * @return Calculated address offset
      */
-    protected abstract int getAddress(final String name);
+    protected abstract int getAddressOfInputBlock();
 
     /**
-     * Calculate bit within address for block with given name.
+     * Calculate bit within address for input block.
      *
-     * @param name Name of the LOGO! block
      * @return Calculated bit
      */
-    protected abstract int getBit(final String name);
+    protected abstract int getBitOfInputBlock();
+
+    /**
+     * Calculate address for the output block.
+     *
+     * @return Calculated address offset
+     */
+    protected abstract int getAddressOfOutputBlock();
+
+    /**
+     * Calculate bit within address for output block.
+     *
+     * @return Calculated bit
+     */
+    protected abstract int getBitOfOutputBlock();
 
 }

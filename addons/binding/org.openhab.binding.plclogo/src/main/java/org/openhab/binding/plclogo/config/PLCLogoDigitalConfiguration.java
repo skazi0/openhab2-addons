@@ -17,9 +17,32 @@ package org.openhab.binding.plclogo.config;
 public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
 
     @Override
-    public boolean isBlockValid() {
+    public boolean isInputBlockValid() {
         boolean valid = false;
-        final String name = getBlockName();
+        final String name = getInputBlockName();
+        if (name.length() >= 2) {
+            valid = valid || name.startsWith("NI"); // Inputs
+            valid = valid || name.startsWith("Q") || name.startsWith("NQ"); // Outputs
+            valid = valid || name.startsWith("M"); // Markers
+            if (!valid && name.startsWith("VB")) { // Memory block
+                final String[] parts = name.split("\\.");
+                if (parts.length == 2) {
+                    final int bit = Integer.parseInt(parts[1]);
+                    valid = (0 <= bit) && (bit <= 7);
+                    if (valid && Character.isDigit(parts[0].charAt(2))) {
+                        final int address = Integer.parseInt(parts[0].substring(2));
+                        valid = (0 <= address) && (address <= 850);
+                    }
+                }
+            }
+        }
+        return valid;
+    }
+
+    @Override
+    public boolean isOutputBlockValid() {
+        boolean valid = false;
+        final String name = getInputBlockName();
         if (name.length() >= 2) {
             valid = valid || name.startsWith("I") || name.startsWith("NI"); // Inputs
             valid = valid || name.startsWith("Q") || name.startsWith("NQ"); // Outputs
@@ -40,14 +63,7 @@ public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
     }
 
     @Override
-    public boolean isInputBlock() {
-        final String kind = getBlockKind();
-        return kind.equalsIgnoreCase("I") || kind.equalsIgnoreCase("NI");
-    }
-
-    @Override
     public String getItemType() {
-        return isInputBlock() ? "Contact" : "Switch";
+        return isInputBlockValid() ? "Switch" : "Contact";
     }
-
 }

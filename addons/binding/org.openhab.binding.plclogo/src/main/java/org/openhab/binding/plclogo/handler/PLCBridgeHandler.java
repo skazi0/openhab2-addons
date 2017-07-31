@@ -127,8 +127,8 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
                                 }
 
                                 final int offset = PLCLogoDataType.getBytesCount(handler.getBlockDataType());
-                                if (offset > 0) {
-                                    final int address = handler.getAddress();
+                                if (offset > 0 && handler.hasOutputBlock()) {
+                                    final int address = handler.getOutputAddress();
                                     handler.setData(Arrays.copyOfRange(buffer, address, address + offset));
                                 } else {
                                     logger.error("Invalid handler {} found.", handler.getClass().getSimpleName());
@@ -192,9 +192,11 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         } else if (handler instanceof PLCBlockHandler && command instanceof RefreshType) {
             final PLCBlockHandler bHandler = (PLCBlockHandler) handler;
             final int offset = PLCLogoDataType.getBytesCount(bHandler.getBlockDataType());
-            if ((offset > 0) && (ANALOG_CHANNEL_ID.equals(channelId) || DIGITAL_CHANNEL_ID.equals(channelId))) {
+            if ((offset > 0) && (bHandler.hasOutputBlock())
+                    && (ANALOG_CHANNEL_ID.equals(channelId) || DIGITAL_CHANNEL_ID.equals(channelId))) {
                 final byte[] buffer = new byte[offset];
-                int result = client.ReadDBArea(1, bHandler.getAddress(), buffer.length, S7Client.S7WLByte, buffer);
+                int result = client.ReadDBArea(1, bHandler.getOutputAddress(), buffer.length, S7Client.S7WLByte,
+                        buffer);
                 if (result == 0) {
                     bHandler.setData(Arrays.copyOfRange(buffer, 0, offset));
                 } else {
@@ -207,7 +209,7 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
                 && (command instanceof OnOffType || command instanceof OpenClosedType)) {
             final PLCDigitalBlockHandler bHandler = (PLCDigitalBlockHandler) handler;
             final int offset = PLCLogoDataType.getBytesCount(bHandler.getBlockDataType());
-            if ((offset > 0) && DIGITAL_CHANNEL_ID.equals(channelId)) {
+            if ((offset > 0) && bHandler.hasInputBlock() && DIGITAL_CHANNEL_ID.equals(channelId)) {
                 final byte[] buffer = new byte[offset];
                 if (command instanceof OnOffType) {
                     final OnOffType state = (OnOffType) command;
@@ -217,7 +219,7 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
                     S7.SetBitAt(buffer, 0, 0, state == OpenClosedType.CLOSED);
                 }
 
-                final int address = 8 * bHandler.getAddress() + bHandler.getBit();
+                final int address = 8 * bHandler.getInputAddress() + bHandler.getInputBit();
                 int result = client.WriteDBArea(1, address, buffer.length, S7Client.S7WLBit, buffer);
                 if (result != 0) {
                     logger.error("Can not write data to LOGO!: {}.", S7Client.ErrorText(result));
@@ -228,7 +230,7 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         } else if (handler instanceof PLCAnalogBlockHandler && command instanceof DecimalType) {
             final PLCAnalogBlockHandler bHandler = (PLCAnalogBlockHandler) handler;
             final int offset = PLCLogoDataType.getBytesCount(bHandler.getBlockDataType());
-            if (((offset == 2) || (offset == 4)) && ANALOG_CHANNEL_ID.equals(channelId)) {
+            if (((offset == 2) || (offset == 4)) && bHandler.hasInputBlock() && ANALOG_CHANNEL_ID.equals(channelId)) {
                 final byte[] buffer = new byte[offset];
                 if (offset == 2) {
                     final DecimalType state = (DecimalType) command;
@@ -237,7 +239,8 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
                     final DecimalType state = (DecimalType) command;
                     S7.SetDWordAt(buffer, 0, state.longValue());
                 }
-                int result = client.WriteDBArea(1, bHandler.getAddress(), buffer.length, S7Client.S7WLByte, buffer);
+                int result = client.WriteDBArea(1, bHandler.getInputAddress(), buffer.length, S7Client.S7WLByte,
+                        buffer);
                 if (result != 0) {
                     logger.error("Can not write data to LOGO!: {}.", S7Client.ErrorText(result));
                 }
@@ -247,7 +250,7 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         } else if (handler instanceof PLCAnalogBlockHandler && command instanceof DateTimeType) {
             final PLCAnalogBlockHandler bHandler = (PLCAnalogBlockHandler) handler;
             final int offset = PLCLogoDataType.getBytesCount(bHandler.getBlockDataType());
-            if ((offset == 2) && ANALOG_CHANNEL_ID.equals(channelId)) {
+            if ((offset == 2) && bHandler.hasInputBlock() && ANALOG_CHANNEL_ID.equals(channelId)) {
                 final String type = bHandler.getChannelType();
                 final byte[] buffer = new byte[offset];
                 if (ANALOG_TIME_CHANNEL.equalsIgnoreCase(type)) {
@@ -262,7 +265,8 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
                     buffer[1] = S7.ByteToBCD(calendar.get(Calendar.DATE));
                 }
 
-                int result = client.WriteDBArea(1, bHandler.getAddress(), buffer.length, S7Client.S7WLByte, buffer);
+                int result = client.WriteDBArea(1, bHandler.getInputAddress(), buffer.length, S7Client.S7WLByte,
+                        buffer);
                 if (result != 0) {
                     logger.error("Can not write data to LOGO!: {}.", S7Client.ErrorText(result));
                 }
