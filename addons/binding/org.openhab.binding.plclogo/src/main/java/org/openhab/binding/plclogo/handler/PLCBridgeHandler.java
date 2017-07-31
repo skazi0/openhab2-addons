@@ -364,7 +364,7 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         if (childHandler instanceof PLCBlockHandler) {
             final PLCBlockHandler handler = (PLCBlockHandler) childHandler;
             synchronized (handlers) {
-                final String name = handler.getBlockName();
+                final String name = handler.getOutputBlockName();
                 if (!handlers.contains(handler)) {
                     handlers.add(handler);
                     logger.debug("Insert handler for block {}.", name);
@@ -380,7 +380,7 @@ public class PLCBridgeHandler extends BaseBridgeHandler {
         if (childHandler instanceof PLCBlockHandler) {
             final PLCBlockHandler handler = (PLCBlockHandler) childHandler;
             synchronized (handlers) {
-                final String name = handler.getBlockName();
+                final String name = handler.getOutputBlockName();
                 if (handlers.contains(handler)) {
                     handlers.remove(handler);
                     logger.debug("Remove handler for block {}.", name);

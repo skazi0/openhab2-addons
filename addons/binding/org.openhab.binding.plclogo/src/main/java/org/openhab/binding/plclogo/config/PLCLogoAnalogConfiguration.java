@@ -65,7 +65,7 @@ public class PLCLogoAnalogConfiguration extends PLCLogoBlockConfiguration {
     public boolean isInputBlockValid() {
         boolean valid = false;
         final String name = getInputBlockName();
-        if (name.length() >= 3) {
+        if (name != null && name.length() >= 3) {
             valid = valid || name.startsWith("NAI"); // Inputs
             valid = valid || name.startsWith("AQ") || name.startsWith("NAQ"); // Outputs
             valid = valid || name.startsWith("AM"); // Markers
@@ -85,7 +85,7 @@ public class PLCLogoAnalogConfiguration extends PLCLogoBlockConfiguration {
     public boolean isOutputBlockValid() {
         boolean valid = false;
         final String name = getOutputBlockName();
-        if (name.length() >= 3) {
+        if (name != null && name.length() >= 3) {
             valid = valid || name.startsWith("AI") || name.startsWith("NAI"); // Inputs
             valid = valid || name.startsWith("AQ") || name.startsWith("NAQ"); // Outputs
             valid = valid || name.startsWith("AM"); // Markers

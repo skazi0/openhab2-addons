@@ -30,7 +30,7 @@ public abstract class PLCLogoBlockConfiguration {
      * @return Configured Siemens LOGO! input block name
      */
     public String getInputBlockName() {
-        return input;
+        return input != null ? input : block;
     }
 
     /**

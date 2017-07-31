@@ -72,16 +72,16 @@ public class PLCAnalogBlockHandler extends PLCBlockHandler {
             config = getConfigAs(PLCLogoAnalogConfiguration.class);
         }
 
-        final String name = config.getBlockName();
+        final String name = config.getOutputBlockName();
         logger.debug("Initialize LOGO! {} analog handler.", name);
 
         scheduler.execute(new Runnable() {
             @Override
             public void run() {
-                if (config.isBlockValid()) {
+                if (config.isOutputBlockValid() || config.isInputBlockValid()) {
                     ThingBuilder tBuilder = editThing();
 
-                    String text = config.isInputBlock() ? INPUT_CHANNEL : OUTPUT_CHANNEL;
+                    String text = config.isInputBlockValid() ? INPUT_CHANNEL : OUTPUT_CHANNEL;
                     text = text.substring(0, 1).toUpperCase() + text.substring(1);
                     tBuilder = tBuilder.withLabel(bridge.getLabel() + ": " + text + " " + name);
 
@@ -112,7 +112,7 @@ public class PLCAnalogBlockHandler extends PLCBlockHandler {
 
     @Override
     public void dispose() {
-        logger.debug("Dispose LOGO! {} analog handler.", config.getBlockName());
+        logger.debug("Dispose LOGO! {} analog handler.", config.getOutputBlockName());
         super.dispose();
 
         oldValue = Long.MAX_VALUE;
@@ -165,19 +165,24 @@ public class PLCAnalogBlockHandler extends PLCBlockHandler {
                 oldValue = value;
             }
         } else {
-            logger.warn("Block {} received wrong data {}.", getBlockName(), data);
+            logger.warn("Block {} received wrong data {}.", getOutputBlockName(), data);
         }
     }
 
     @Override
-    public String getBlockName() {
-        return config.getBlockName();
+    public String getInputBlockName() {
+        return config.getInputBlockName();
+    }
+
+    @Override
+    public String getOutputBlockName() {
+        return config.getOutputBlockName();
     }
 
     @Override
     public PLCLogoDataType getBlockDataType() {
-        final String kind = config.getBlockKind();
-        if ((kind != null) && config.isBlockValid()) {
+        final String kind = config.getBlockKind(getOutputBlockName());
+        if ((kind != null) && config.isOutputBlockValid()) {
             return kind.equalsIgnoreCase("VD") ? PLCLogoDataType.DWORD : PLCLogoDataType.WORD;
         }
         return PLCLogoDataType.INVALID;
@@ -204,12 +209,13 @@ public class PLCAnalogBlockHandler extends PLCBlockHandler {
     }
 
     @Override
-    protected int getAddress(final String name) {
+    protected int getAddressOfInputBlock() {
         int address = -1;
+        String name = getInputBlockName();
 
         logger.debug("Get address of {} LOGO! for block {} .", getLogoFamily(), name);
 
-        if (config.isBlockValid()) {
+        if (config.isInputBlockValid()) {
             final String block = name.trim().split("\\.")[0];
             if (Character.isDigit(block.charAt(2))) {
                 address = Integer.parseInt(block.substring(2));
@@ -228,7 +234,41 @@ public class PLCAnalogBlockHandler extends PLCBlockHandler {
     }
 
     @Override
-    protected int getBit(final String name) {
+    protected int getBitOfInputBlock() {
+        String name = getInputBlockName();
+        logger.debug("Get bit of {} LOGO! for block {} .", getLogoFamily(), name);
+
+        return 0;
+    }
+    
+    @Override
+    protected int getAddressOfOutputBlock() {
+        int address = -1;
+        String name = getOutputBlockName();
+
+        logger.debug("Get address of {} LOGO! for block {} .", getLogoFamily(), name);
+
+        if (config.isOutputBlockValid()) {
+            final String block = name.trim().split("\\.")[0];
+            if (Character.isDigit(block.charAt(2))) {
+                address = Integer.parseInt(block.substring(2));
+            } else if (Character.isDigit(block.charAt(3))) {
+                address = Integer.parseInt(block.substring(3));
+            }
+
+            final int base = getBase(name);
+            if (base != 0) { // Only VB/VD/VW memory ranges are 0 based
+                address = base + (address - 1) * 2;
+            }
+        } else {
+            logger.error("Wrong configurated LOGO! block {} found.", name);
+        }
+        return address;
+    }
+
+    @Override
+    protected int getBitOfOutputBlock() {
+        String name = getInputBlockName();
         logger.debug("Get bit of {} LOGO! for block {} .", getLogoFamily(), name);
 
         return 0;

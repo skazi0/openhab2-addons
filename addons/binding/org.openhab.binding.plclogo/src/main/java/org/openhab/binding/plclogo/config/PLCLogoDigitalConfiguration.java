@@ -20,7 +20,7 @@ public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
     public boolean isInputBlockValid() {
         boolean valid = false;
         final String name = getInputBlockName();
-        if (name.length() >= 2) {
+        if (name != null && name.length() >= 2) {
             valid = valid || name.startsWith("NI"); // Inputs
             valid = valid || name.startsWith("Q") || name.startsWith("NQ"); // Outputs
             valid = valid || name.startsWith("M"); // Markers
@@ -42,8 +42,8 @@ public class PLCLogoDigitalConfiguration extends PLCLogoBlockConfiguration {
     @Override
     public boolean isOutputBlockValid() {
         boolean valid = false;
-        final String name = getInputBlockName();
-        if (name.length() >= 2) {
+        final String name = getOutputBlockName();
+        if (name != null && name.length() >= 2) {
             valid = valid || name.startsWith("I") || name.startsWith("NI"); // Inputs
             valid = valid || name.startsWith("Q") || name.startsWith("NQ"); // Outputs
             valid = valid || name.startsWith("M"); // Markers
